@@ -12,7 +12,6 @@ const val REQUEST_GET_SINGLE_FILE = 1
 class MainActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
