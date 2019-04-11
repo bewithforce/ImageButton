@@ -9,14 +9,14 @@ import android.net.Uri
 
 
 class MainActivity : AppCompatActivity() {
-    private var selectedImageUri: Uri? = null
+    private var selectedImageUri: Uri = Uri.EMPTY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         savedInstanceState?.let {
-            selectedImageUri = savedInstanceState.getParcelable(PATH)
-            if (selectedImageUri != null && selectedImageUri != Uri.EMPTY) {
+            selectedImageUri = savedInstanceState.getParcelable(PATH) ?: Uri.EMPTY
+            if (selectedImageUri != Uri.EMPTY) {
                 imageView.setImageURI(selectedImageUri)
             }
         }
@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_GET_SINGLE_FILE && resultCode == Activity.RESULT_OK) {
-            selectedImageUri = data?.data
-            if (selectedImageUri != null && selectedImageUri != Uri.EMPTY) {
+            data?.data?.let {
+                selectedImageUri = it
                 imageView.setImageURI(selectedImageUri)
             }
         }
@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        if (selectedImageUri != null && selectedImageUri != Uri.EMPTY)
-            outState?.putParcelable(PATH, selectedImageUri)
+        outState?.putParcelable(PATH, selectedImageUri)
     }
 
     private fun openGallery() {
